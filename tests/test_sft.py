@@ -1,12 +1,11 @@
 import torch
 
-from .adapters import (
-    run_compute_entropy as compute_entropy,
-    run_get_response_log_probs as get_response_log_probs,
-    run_masked_normalize as masked_normalize,
-    run_tokenize_prompt_and_output as tokenize_prompt_and_output,
-    run_sft_microbatch_train_step as sft_microbatch_train_step,
-)
+from .adapters import run_compute_entropy as compute_entropy
+from .adapters import run_get_response_log_probs as get_response_log_probs
+from .adapters import run_masked_normalize as masked_normalize
+from .adapters import run_sft_microbatch_train_step as sft_microbatch_train_step
+from .adapters import run_tokenize_prompt_and_output as tokenize_prompt_and_output
+
 
 def test_tokenize_prompt_and_output(numpy_snapshot, prompt_strs, output_strs, tokenizer):
     output = tokenize_prompt_and_output(

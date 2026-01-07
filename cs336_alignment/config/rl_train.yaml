@@ -1,0 +1,39 @@
+wandb:
+  project: cs336-assignment-5
+  run_name: rl-std-normalize
+
+model:
+  name: Qwen/Qwen2.5-Math-1.5B
+  dtype: bf16
+
+training:
+  rl:
+    n_grpo_steps: 200
+    advantage_eps: 1e-6
+    rollout_batch_size: 256  # 256
+    group_size: 8  # 8
+    loss_type: "reinforce_with_baseline"  # options include no_baseline, reinforce_with_baseline, grpo_clip
+    use_std_normalization: true
+    epochs_per_rollout_batch: 1  # On-policy
+    train_batch_size: 256  # On-policy, 256
+    length_normalize: false
+    cliprange: 0.1
+  gradient_accumulation_steps: 128  # microbatch size is 2, will fit on H100, 128
+  ckpt_dir: /scratch/am10150/projects/cs336/assignment5-alignment/data/math/checkpoints/rl/use_std_norm_exp/
+  save_steps: 10
+  eval_log_steps: 10
+  eval_sample: 1024
+  
+optimizer:
+  lr: 1e-5
+  type:
+    name: AdamW
+    beta1: 0.9
+    beta2: 0.95
+
+vllm_eval:
+  gpu_memory_utilization: 0.85
+  seed: 0
+  sampling_temperature: 1.0
+  sampling_min_tokens: 4  # As in Expiter, disallow empty string responses
+  sampling_max_tokens: 1024

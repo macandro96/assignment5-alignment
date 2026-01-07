@@ -1,0 +1,35 @@
+wandb:
+  project: cs336-assignment-5
+  run_name: sft
+
+model:
+  name: Qwen/Qwen2.5-Math-1.5B
+  dtype: bf16
+
+optimizer:
+  lr: 2e-5
+  type:
+    name: AdamW
+    beta1: 0.9
+    beta2: 0.999
+  scheduler:
+    warmup_ratio: 0.03
+  
+training:
+  grad_accum_steps: 16
+  epochs: 2
+  logging_steps: 32
+  save_steps: 256
+  ckpt_dir: /scratch/am10150/projects/cs336/assignment5-alignment/data/math/checkpoints/sft/
+  eval_log_steps: 128
+
+data:
+  data_path: /scratch/am10150/projects/cs336/assignment5-alignment/data/math/sft.jsonl
+  sample_rows: 0  # 0 means use all rows
+  batch_size: 4
+  num_workers: 4
+  eval_sample: 100  # sample rows from test-set to log during training
+
+vllm_eval:
+  gpu_memory_utilization: 0.85
+  seed: 0
